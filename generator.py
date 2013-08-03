@@ -52,7 +52,9 @@ class Generator:
         if self.capitalize:
             genwords = self.smart_trim(genwords)
 
-        while len(genwords) > 1 and sum([len(word)+1 for word in genwords]) > 140:
+        length = random.randint(30,140)
+
+        while len(genwords) > 1 and sum([len(word)+1 for word in genwords]) > length:
             genwords.pop()
             if self.capitalize:
                 genwords[-1] += random.choice(['.', '!', '?'])
