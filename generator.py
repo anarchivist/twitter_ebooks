@@ -6,8 +6,9 @@ import random
 from nltk import LidstoneProbDist, NgramModel
 
 class Generator:
-    def __init__(self, dataset, capitalize=False):
+    def __init__(self, dataset, capitalize=False, hashtag=''):
         self.capitalize = capitalize
+        self.hashtag = hashtag
         tweets = dataset.split("\n")
         words = []
         for tweet in tweets:
@@ -52,15 +53,15 @@ class Generator:
         if self.capitalize:
             genwords = self.smart_trim(genwords)
 
-        length = random.randint(30,140)
-
+        length = random.randint(50,140)
+        hashlength = 0 if len(self.hashtag) == 0 else len(self.hashtag) + 1
         while len(genwords) > 1 and sum([len(word)+1 for word in genwords]) > length:
             genwords.pop()
             if self.capitalize:
                 genwords[-1] += random.choice(['.', '!', '?'])
 
         product = " ".join(genwords)
-        if len(product) > 140: product = product[0:140]
+        if len(product) > 140: product = product[0:(140-hashlength)]
 
         # Remove mismatched enclosures
         for pair in [['(', ')'], ['{', '}'], ['[', ']']]:
@@ -70,5 +71,8 @@ class Generator:
         for enc in ['"', '*']:
             if product.count(enc) % 2 != 0:
                 product = product.replace(enc, '')
+
+        if self.hashtag != '':
+            product = product + ' ' + self.hashtag
 
         return product

@@ -13,6 +13,7 @@ capitalize = os.environ.get("EBOOKS_CAPITALIZE", False) != False
 interval   = int(os.environ.get("EBOOKS_INTERVAL", "14400"))
 username   = os.environ["EBOOKS_USERNAME"]
 target     = os.environ["EBOOKS_TARGET"]
+hashtag    = os.environ["EBOOKS_HASHTAG"]
 
 auth = json.loads(os.environ["EBOOKS_AUTH"])
 _auth = tweepy.OAuthHandler(auth['consumer_key'], auth['consumer_secret'])
@@ -32,7 +33,7 @@ while "they're taking the hobbits to Isengard":
         (data, last_id) = update
         db.append("data", data)
         db.set("last_id", last_id)
-    gen = Generator(db.get("data"), capitalize)
+    gen = Generator(db.get("data"), capitalize, hashtag)
     tweet = gen.tweetworthy()
     api.update_status(tweet)
     time.sleep(interval)
