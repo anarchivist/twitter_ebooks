@@ -13,7 +13,7 @@ capitalize = os.environ.get("EBOOKS_CAPITALIZE", False) != False
 interval   = int(os.environ.get("EBOOKS_INTERVAL", "14400"))
 username   = os.environ["EBOOKS_USERNAME"]
 target     = os.environ["EBOOKS_TARGET"]
-hashtag    = os.environ["EBOOKS_HASHTAG"]
+hashtag    = os.environ.get("EBOOKS_HASHTAG", "")
 
 auth = json.loads(os.environ["EBOOKS_AUTH"])
 _auth = tweepy.OAuthHandler(auth['consumer_key'], auth['consumer_secret'])
